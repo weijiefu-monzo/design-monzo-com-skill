@@ -9,43 +9,43 @@ argument-hint: "[description of what to design]"
 
 You are assembling Monzo.com pages in Figma by inserting page templates and editing content blocks. You should **never** create custom components, variables, or design tokens — only use the existing library of page templates and content blocks.
 
-## Step 1: Read the Design Guidelines
+## Step 1: Content blocks, usage, keys, then Figma
 
-Before making any changes, fetch the relevant Notion documentation:
+**Start here** — do not open foundation or general guideline docs unless the user asks (see below).
 
-1. **Always start** by reading the main design guidelines page:
-   - Notion doc ID: `28569fe426d2805ba607ff1e5c22afb5` (Design Guidelines for Monzo.com)
-
-2. **Read the content blocks catalogue** to understand available components:
+1. **Fetch the content blocks catalogue first** and use it as the primary reference for what to build:
    - Notion doc ID: `29169fe426d28067a1d3d7f51a12ba3f` (Content blocks)
+   - Read the list of blocks, **usage recommendations**, and any guidance on when and how to use each block.
+   - Use the **Component Key** column for each block you will insert in Figma.
 
-3. **Read the page templates** to understand page structure:
+2. **Fetch page templates** when you need structure or a template component key:
    - Notion doc ID: `29269fe426d28041bb90cb09e3d22b7e` (Page templates)
+   - Pick the right template (e.g. Product, Feature — always confirm against this doc for the latest list) and read its **Component Key**.
 
-4. **Read the relevant foundation pages** depending on the task:
-   - Colours: `28e69fe426d280bb8994f684f6bf2046`
-   - Typography: `28e69fe426d280a19fd0cea4fd82aefd`
-   - Dimensions: `28f69fe426d28022b982f91c35e749f6`
-   - Elevation: `29169fe426d2807197a4ddb32b25f7e2`
-   - Motion: `28f69fe426d28067a494d0645d5070a5`
-   - Iconography: `28f69fe426d280aea5cfe509af0e78c2`
-   - Components: `29169fe426d2802eb8d8d96b6266ff0f`
+3. **Look up component keys** from those Notion tables only:
+   - Identify which content blocks and templates the task needs; extract their component keys.
+   - Only use blocks that have a component key — blocks without one are not yet available for use.
+   - Do **not** use `mcp__figma__search_design_system` to find components — Notion is the source of truth for component keys.
 
-Use the `mcp__monzo__ReadNotionDoc` tool with these doc IDs to fetch the latest guidelines.
+4. **Proceed to insert and edit in Figma** (Step 2): instantiate the page template, then add and configure content blocks in the Content Blocks slot using the keys and usage guidance from this step.
 
-## Step 2: Look Up Component Keys from Notion
+**Optional documentation — only if the user asks** (or the task explicitly requires a specific foundation topic):
 
-Find the correct component keys from the Notion databases you fetched in Step 1:
+- Main design guidelines: `28569fe426d2805ba607ff1e5c22afb5` (Design Guidelines for Monzo.com)
+- Foundation pages:
+  - Colours: `28e69fe426d280bb8994f684f6bf2046`
+  - Typography: `28e69fe426d280a19fd0cea4fd82aefd`
+  - Dimensions: `28f69fe426d28022b982f91c35e749f6`
+  - Elevation: `29169fe426d2807197a4ddb32b25f7e2`
+  - Motion: `28f69fe426d28067a494d0645d5070a5`
+  - Iconography: `28f69fe426d280aea5cfe509af0e78c2`
+  - Components: `29169fe426d2802eb8d8d96b6266ff0f`
 
-1. **Content blocks** (doc ID: `29169fe426d28067a1d3d7f51a12ba3f`) — contains a "Component Key" column for each content block.
-2. **Page templates** (doc ID: `29269fe426d28041bb90cb09e3d22b7e`) — contains a "Component Key" column for each template.
-3. Identify which content blocks and templates are needed for the task and extract their component keys from these tables.
-4. Only use blocks that have a component key — blocks without one are not yet available for use.
-5. Do **not** use `mcp__figma__search_design_system` to find components — always rely on the Notion databases as the source of truth for component keys.
+Use `mcp__monzo__ReadNotionDoc` with these doc IDs when fetching.
 
-## Step 3: Design in Figma
+## Step 2: Design in Figma
 
-1. **Always start with a page template.** Insert a page template instance first (using its component key from Step 2), then edit, remove, or rearrange the content blocks within its **Content Blocks slot**.
+1. **Always start with a page template.** Insert a page template instance first (using its component key from Step 1), then edit, remove, or rearrange the content blocks within its **Content Blocks slot**.
    - If you are unsure which page template to use, prompt the user with the available options to confirm which starter to begin with. Current templates include **"Product"** and **"Feature"** — more will be added over time, so always check the Notion page templates database for the latest list.
 
 2. **Inserting component instances (CRITICAL — avoid font errors):**
@@ -66,7 +66,7 @@ Find the correct component keys from the Notion databases you fetched in Step 1:
      ```
 
 3. **Working with content blocks inside the template:**
-   - Add content blocks into the Content Blocks slot by instantiating them using their component keys from Step 2.
+   - Add content blocks into the Content Blocks slot by instantiating them using their component keys from Step 1.
    - To read or modify content block properties, first try reading them from the page template instance. If properties cannot be read from the instance directly, **read the children of the Content Blocks slot** — this will give you the relevant content block instances and their properties.
    - Rearrange or remove content blocks within the slot as needed for the page.
 
@@ -110,7 +110,7 @@ Find the correct component keys from the Notion databases you fetched in Step 1:
 
 5. **Never create custom components, variables, or design tokens.** Only instantiate and edit existing page templates and content blocks from the library.
 
-## Step 4: Screenshot and Validate
+## Step 3: Screenshot and Validate
 
 After every creation or modification:
 
@@ -128,10 +128,10 @@ After every creation or modification:
 
 - **Only use existing components**: Never create custom components, variables, or design tokens. Work exclusively with page templates and content blocks from the library.
 - **Accessibility first**: Ensure sufficient colour contrast, write good alt text, use semantic structure.
-- **Consistency**: Always reference the design guidelines — don't invent new patterns.
+- **Consistency**: Follow usage recommendations from the content blocks (and page templates) Notion docs; pull in the main design guidelines or foundation docs only when the user asks or the task clearly needs them — don't invent new patterns.
 - **Trust and clarity**: Monzo's brand is built on transparency — designs should be clean, clear, and honest.
 
-## Step 5: CMS Handoff
+## Step 4: CMS Handoff
 
 Once the user is satisfied with the design:
 
