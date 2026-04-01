@@ -2,7 +2,7 @@
 name: design-monzo-com
 description: Assemble Monzo.com pages in Figma by inserting page templates and editing content blocks. Use when building or editing product pages for monzo.com.
 user-invocable: true
-argument-hint: "[description of what to design]"
+argument-hint: "[optional description or PRD]"
 ---
 
 # Monzo.com Design Workflow
@@ -23,13 +23,55 @@ Use `mcp__monzo__ReadNotionDoc` with these doc IDs. Do not open foundation docs 
 ## Step 2: Look Up Component Keys from Notion
 
 1. Find "Component Key" column in the content blocks and page templates Notion docs.
-2. Identify which blocks and templates are needed and extract their component keys.
-3. Only use blocks that have a component key.
+2. Build a reference list of all available content blocks and page templates with their names, descriptions, and component keys.
+3. Only use blocks that have a component key. Prioritise blocks that are also available in Contentful (have a Contentful link) — these are production-ready. Blocks without component keys are not yet available; if one would be a good fit, mention it to the user as "coming soon" but do not plan around it.
 4. Do **not** use `search_design_system` to find components — Notion databases are the source of truth.
 
-## Step 3: Design in Figma
+Present the available content blocks and page templates to the user as a summary so they know what building blocks are available.
 
-### 3.1 Inserting templates and content blocks
+## Step 3: Plan the design with the user
+
+Before touching Figma, align with the user on what to build. This step produces a page plan — an ordered list of content blocks with a content direction for each. Keep this lightweight; the user can fine-tune after seeing the design in Figma.
+
+### If the user provides a PRD or detailed brief:
+
+1. Read and process the PRD.
+2. Map the PRD's requirements to available content blocks from Step 2.
+3. Propose an ordered page plan: which content blocks to use, in what order, with a brief content direction for each (e.g. "Hero — introduce the credit card, lead with no-annual-fee message"). Do NOT specify every field — just the overall direction and tone.
+4. Present the plan to the user for review.
+
+### If the user provides a brief description or no description:
+
+1. Ask the user a maximum of **3 questions** to understand the page — e.g. what product/feature, what's the primary CTA, any key messages or legal requirements.
+2. Based on the answers, suggest which content blocks to use and in what order, with a brief content direction for each. Explain why each block fits.
+3. The user may adjust — add, remove, reorder blocks, or refine direction. Keep this to **one or two rounds** max. Don't over-interview; the user can fine-tune after seeing the design.
+
+### Output of this step:
+
+A confirmed page plan. Include the component key for each block so that Step 4 can proceed without re-reading the Notion docs.
+
+```
+Page template: [name] (key: ...)
+
+1. [Content block name] (key: ...)
+   Direction: ...
+
+2. [Content block name] (key: ...)
+   Direction: ...
+```
+
+### How to proceed:
+
+Ask the user which path they prefer:
+
+- **Option A: Review the plan as text** — confirm the plan above, then assemble in Figma.
+- **Option B: Assemble a rough draft in Figma first** — skip text approval, build directly from the plan, and let the user iterate visually.
+
+Proceed to Step 4 based on the user's choice.
+
+## Step 4: Design in Figma
+
+### 4.1 Inserting templates and content blocks
 
 **Always start with a page template.** Insert a page template instance first, then edit, remove, or rearrange content blocks within its Content Blocks slot.
 
@@ -57,7 +99,7 @@ const instance = component.createInstance();
 slot.insertChild(INDEX, instance);
 ```
 
-### 3.2 Reading instance properties
+### 4.2 Reading instance properties
 
 When you need to inspect or edit an instance, follow this process:
 
@@ -115,7 +157,7 @@ return { frameId: frame.id };
 ```
 Then parse the `PROPS:` frame from `get_metadata` output. Always delete the temp frame afterwards.
 
-### 3.3 Setting instance properties
+### 4.3 Setting instance properties
 
 Use `setProperties()` with the exact property keys from `componentProperties` and valid values from `componentPropertyDefinitions`:
 
@@ -139,7 +181,7 @@ instance.setProperties({
 
 **To show/hide elements:** Set `visible = true/false` on nodes found via traversal.
 
-### 3.4 Inspecting the Content Blocks slot
+### 4.4 Inspecting the Content Blocks slot
 
 Use `get_metadata` to see the slot structure. If the result is too large, parse with a Python script:
 ```python
@@ -173,16 +215,13 @@ for c in children:
 
 Always re-inspect after modifying the slot to confirm changes.
 
-## Step 4: Screenshot and Validate
+## Step 5: Screenshot and Validate
 
-After every creation or modification:
+After assembling the full page, take a single screenshot of the complete page to verify the result. Only take additional screenshots if debugging a specific visual issue.
 
-1. Use `get_screenshot` to capture the result.
-2. Check for correct alignment, spacing, consistent design tokens, fill vs hug, proper centering.
-3. Fix issues and re-screenshot (max 3 iterations).
-4. Confirm the final result with a screenshot.
+Do **not** screenshot after every small property edit — this wastes time. Only screenshot at major milestones (e.g. full page assembled, or after fixing a visual bug).
 
-## Step 5: CMS Handoff
+## Step 6: CMS Handoff
 
 Once the user is satisfied with the design:
 
