@@ -45,6 +45,10 @@ instance.y = 0;
 
 **Font loading caveat:** Monzo custom fonts are not available in the MCP Plugin API runtime. Use `component.createInstance()` which places directly on the page. Do not use `appendChild()` on nodes containing text — it triggers font loading and will fail.
 
+**Detaching page templates:** After inserting a page template, you may detach it (`instance.detachInstance()`) to get a regular frame. Page templates typically contain the top nav and footer — detaching gives you direct access to all children for editing. You can tell it's a page template because its component key comes from the **Page templates** Notion doc.
+
+**Never detach content blocks.** Content blocks inserted into the Content Blocks slot must remain as instances — detaching them breaks the component link and design system updates. You can tell it's a content block because its component key comes from the **Content blocks** Notion doc.
+
 **Adding content blocks into the Content Blocks slot:**
 ```javascript
 const slot = findByName(templateInstance, 'Content Blocks', 0);
