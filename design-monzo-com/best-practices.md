@@ -21,11 +21,10 @@ No page should dump all features upfront. Sequence information so each section b
 | 1 | Hero — emotional hook + core value prop (includes built-in trust cues: customer count, app ratings, Trustpilot, badges) | Product Hero |
 | 2–4 | Feature showcase — visual storytelling | Cards Carousel, Feature Highlights, Feature Card Highlights |
 | 4–6 | Rational proof — comparison, how-it-works | Feature or Product Comparison, Progressive Content |
-| 6–8 | Trust reinforcement + objection handling | Media Text Block (awards), FAQ, UI Spotlight |
-| Before last | Social proof — reinforce credibility before final CTA | Customer Count & Trustpilot |
+| 6–8 | Trust reinforcement + objection handling | Media Text Block (awards), Customer Count & Trustpilot, FAQ, UI Spotlight |
 | Last | Conversion CTA | Open Account, Current Account Switch Service |
 
-**Note:** The Product Hero already includes trust cues (customer count, app store ratings, Trustpilot score, badges) built into its layout. The standalone Customer Count & Trustpilot block should be placed lower on the page — typically just before the final conversion CTA — to reinforce credibility at the decision point, not duplicated immediately after the hero.
+**Note:** The Product Hero already includes trust cues (customer count, app store ratings, Trustpilot score, badges) built into its layout. The standalone Customer Count & Trustpilot block belongs in the trust reinforcement section (not immediately after the hero) to reinforce credibility later in the page when the user is closer to a decision.
 
 ### Pacing and Visual Rhythm
 
