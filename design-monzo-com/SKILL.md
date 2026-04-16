@@ -262,9 +262,46 @@ instance.layoutSizingVertical = 'FILL';
 
 **Important:** Both sizing properties must be set **after** the asset is appended to the slot (`slot.appendChild(instance)`), not before — setting them before append will throw.
 
-## Step 5: Screenshot and Validate
+## Step 5: Verify Assets and Validate
 
-After assembling the full page, take a single screenshot of the complete page to verify the result. Only take additional screenshots if debugging a specific visual issue.
+### 5.1 Asset verification (mandatory)
+
+Before taking a screenshot, verify that every content block with an image has an asset inserted. Run a verification script that traverses the page and checks every `[Web] Image` instance for whether its `Image` SLOT has children:
+
+```javascript
+// Find all [Web] Image instances and check their Image slots
+function findAllImages(node, path, results, depth = 0) {
+  if (!node || depth > 8) return;
+  if (node.type === 'INSTANCE' && node.name === '[Web] Image') {
+    const slot = node.children ? node.children.find(c => c.name === 'Image' && c.type === 'SLOT') : null;
+    const hasAsset = slot && slot.children && slot.children.length > 0;
+    results.push({
+      path: path,
+      nodeId: node.id,
+      hasAsset: hasAsset,
+      slotChildCount: slot ? slot.children.length : 0,
+    });
+    return; // Don't recurse deeper into [Web] Image
+  }
+  if ('children' in node && node.children) {
+    for (const child of node.children) {
+      findAllImages(child, path + ' > ' + child.name, results, depth + 1);
+    }
+  }
+}
+```
+
+For every `[Web] Image` where `hasAsset` is `false` and the block's `Media` / `Image` boolean property is enabled, insert the appropriate asset from the page plan. Do not skip image slots — empty image slots result in blank areas on the page.
+
+**Common places where assets are missed:**
+- Carousel card slides — each slide has its own `[Web] Image`
+- Progressive content steps — each step may have a media area
+- Feature card highlights — each card has an image
+- Media text blocks — the main image area
+
+### 5.2 Screenshot
+
+After verifying all assets, take a single screenshot of the complete page to verify the result. Only take additional screenshots if debugging a specific visual issue.
 
 Do **not** screenshot after every small property edit — this wastes time. Only screenshot at major milestones (e.g. full page assembled, or after fixing a visual bug).
 
