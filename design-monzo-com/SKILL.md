@@ -313,9 +313,47 @@ For every `[Web] Image` where `hasAsset` is `false` and the block's `Media` / `I
 - Feature card highlights — each card has an image
 - Media text blocks — the main image area
 
-### 5.2 Screenshot
+### 5.2 Asset annotations (mandatory)
 
-After verifying all assets, take a single screenshot of the complete page to verify the result. Only take additional screenshots if debugging a specific visual issue.
+After verifying assets, annotate every visible `[Web] Image` instance with asset direction. This helps designers understand the rationale and what manual work remains.
+
+**First, clear all existing annotations** on the page to avoid stale notes from previous iterations:
+```javascript
+function clearAnnotations(node, depth = 0) {
+  if (!node || depth > 10) return;
+  if ('annotations' in node && node.annotations && node.annotations.length > 0) {
+    node.annotations = [];
+  }
+  if ('children' in node && node.children) {
+    for (const child of node.children) clearAnnotations(child, depth + 1);
+  }
+}
+clearAnnotations(pageRoot);
+```
+
+**Then, get or create the "Asset direction" annotation category:**
+```javascript
+let categories = await figma.annotations.getAnnotationCategoriesAsync();
+let cat = categories.find(c => c.label === 'Asset direction');
+if (!cat) {
+  cat = await figma.annotations.addAnnotationCategoryAsync({ label: 'Asset direction', color: 'orange' });
+}
+```
+
+**Then, annotate each `[Web] Image` instance** with:
+- **Rationale** — why this asset type was chosen (e.g. "Lifestyle photography conveys warmth", "Phone bezel showcases specific app feature", "Hot Coral for brand breathing room")
+- **TODO** — what still needs to be done (e.g. "Add simplified UI overlay showing Savings Pots", "Replace placeholder bezel with actual app screenshot", or "Asset is final — no action needed")
+
+```javascript
+imageNode.annotations = [{
+  label: '**Rationale:** ...\n\n**TODO:** ...',
+  categoryId: cat.id,
+}];
+```
+
+### 5.3 Screenshot
+
+After verifying all assets and adding annotations, take a single screenshot of the complete page to verify the result. Only take additional screenshots if debugging a specific visual issue.
 
 Do **not** screenshot after every small property edit — this wastes time. Only screenshot at major milestones (e.g. full page assembled, or after fixing a visual bug).
 
