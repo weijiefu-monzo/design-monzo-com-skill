@@ -33,6 +33,8 @@ Present the available content blocks and page templates to the user as a summary
 
 Before touching Figma, align with the user on what to build. This step produces a page plan — an ordered list of content blocks with a content direction and asset direction for each. Keep this lightweight; the user can fine-tune after seeing the design in Figma.
 
+**Best practices:** Read `best-practices.md` (in the same directory as this skill) for proven patterns on content narrative, asset usage, visual rhythm, and conversion strategy. Use these patterns to inform block selection, ordering, and asset direction during planning.
+
 **Asset planning:** For every content block that contains an image, also suggest an asset direction. Read `assets-reference.md` (in the same directory as this skill) for the photography component table and asset guidelines. Consider:
 - **Asset type** — photography, app UI in phone bezel, simplified UI on contrast background, or a combination
 - **Photography selection** — suggest a specific photography component from the reference table that fits the block's narrative. Use the alt text to judge relevance.
