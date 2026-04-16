@@ -215,6 +215,8 @@ instance.setProperties({
 
 **For deeply nested slot children:** Update ONE AT A TIME in separate `use_figma` calls. Batch updates on deeply nested instances often fail. Run separate scripts in parallel for speed.
 
+**Editing nested button labels:** CTA buttons inside content blocks are `[Web] Button` instances with their own component properties. The button label is controlled by `Children#2069:0` (TEXT). To edit, traverse from the content block to find `[Web] Button` instances, then call `setProperties({ 'Children#2069:0': 'Get started' })` on each. Always set real button text — never leave generic defaults like "Primary button" or "Secondary button" visible.
+
 **To show/hide elements:** Set `visible = true/false` on nodes found via traversal.
 
 ### 4.4 Inspecting the Content Blocks slot
