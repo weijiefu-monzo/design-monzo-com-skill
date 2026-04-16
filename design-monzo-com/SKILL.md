@@ -31,33 +31,48 @@ Present the available content blocks and page templates to the user as a summary
 
 ## Step 3: Plan the design with the user
 
-Before touching Figma, align with the user on what to build. This step produces a page plan — an ordered list of content blocks with a content direction for each. Keep this lightweight; the user can fine-tune after seeing the design in Figma.
+Before touching Figma, align with the user on what to build. This step produces a page plan — an ordered list of content blocks with a content direction and asset direction for each. Keep this lightweight; the user can fine-tune after seeing the design in Figma.
+
+**Asset planning:** For every content block that contains an image, also suggest an asset direction. Read `assets-reference.md` (in the same directory as this skill) for the photography component table and asset guidelines. Consider:
+- **Asset type** — photography, app UI in phone bezel, simplified UI on contrast background, or a combination
+- **Photography selection** — suggest a specific photography component from the reference table that fits the block's narrative. Use the alt text to judge relevance.
+- **Background treatment** — Hot Coral, Dark Navy, or lifestyle photography (follow the colour rules: Hot Coral for Personal Banking, Dark Navy + Hot Coral for Business Banking; in rows, never Hot Coral alone — alternate with Dark Navy or photography)
+- **Composition** — standalone photo, photo + card, photo + UI overlay, UI in bezel, or simplified UI element
 
 ### If the user provides a PRD or detailed brief:
 
 1. Read and process the PRD.
 2. Map the PRD's requirements to available content blocks from Step 2.
-3. Propose an ordered page plan: which content blocks to use, in what order, with a brief content direction for each (e.g. "Hero — introduce the credit card, lead with no-annual-fee message"). Do NOT specify every field — just the overall direction and tone.
+3. Propose an ordered page plan: which content blocks to use, in what order, with a brief content direction for each (e.g. "Hero — introduce the credit card, lead with no-annual-fee message"). For blocks with images, include an asset direction. Do NOT specify every field — just the overall direction and tone.
 4. Present the plan to the user for review.
 
 ### If the user provides a brief description or no description:
 
-1. Ask the user a maximum of **3 questions** to understand the page — e.g. what product/feature, what's the primary CTA, any key messages or legal requirements.
-2. Based on the answers, suggest which content blocks to use and in what order, with a brief content direction for each. Explain why each block fits.
+1. Ask the user a maximum of **3 questions** to understand the page at a strategic level. Focus on the big picture — audience, journey, and narrative — not on individual block details like CTAs or legal copy (those come later when editing blocks). Good questions include:
+   - **Who is this page for?** — e.g. existing Monzo customers being upsold, prospects comparing providers, people arriving from search
+   - **Where does this page sit in the user journey?** — e.g. linked from the app, standalone product page for organic traffic, campaign landing page
+   - **What's the narrative arc / key story?** — e.g. "simple insurance built into your bank", "premium perks that pay for themselves", a specific angle or differentiator to lead with
+   Avoid tactical questions about specific CTAs, copy, legal text, or individual block content — those are decisions for when editing blocks, not when planning the page structure.
+2. Based on the answers, suggest which content blocks to use and in what order, with a brief content direction and asset direction for each. Explain why each block fits.
 3. The user may adjust — add, remove, reorder blocks, or refine direction. Keep this to **one or two rounds** max. Don't over-interview; the user can fine-tune after seeing the design.
 
 ### Output of this step:
 
-A confirmed page plan. Include the component key for each block so that Step 4 can proceed without re-reading the Notion docs.
+A confirmed page plan. Include the component key for each block so that Step 4 can proceed without re-reading the Notion docs. For blocks with images, include the asset direction and photography component key.
 
 ```
 Page template: [name] (key: ...)
 
 1. [Content block name] (key: ...)
    Direction: ...
+   Asset: [photography name] (key: ...) on [background] — [composition note]
 
 2. [Content block name] (key: ...)
    Direction: ...
+
+3. [Content block name] (key: ...)
+   Direction: ...
+   Asset: App UI in phone bezel on Dark Navy background
 ```
 
 ### How to proceed:
@@ -75,7 +90,7 @@ Proceed to Step 4 based on the user's choice.
 
 **Always start with a page template.** Insert a page template instance first, then edit, remove, or rearrange content blocks within its Content Blocks slot.
 
-**Standard pattern for inserting a template:**
+**Standard pattern for inserting a template — always insert AND detach in the same step:**
 ```javascript
 const page = await figma.getNodeByIdAsync('PAGE_NODE_ID');
 await figma.setCurrentPageAsync(page);
@@ -83,11 +98,14 @@ const component = await figma.importComponentByKeyAsync('COMPONENT_KEY');
 const instance = component.createInstance();
 instance.x = 0;
 instance.y = 0;
+// MUST detach immediately — do not inspect or edit before detaching
+const detached = instance.detachInstance();
+return { id: detached.id, children: detached.children.map(c => ({ id: c.id, name: c.name, type: c.type })) };
 ```
 
 **Font loading caveat:** Monzo custom fonts are not available in the MCP Plugin API runtime. Use `component.createInstance()` which places directly on the page. Do not use `appendChild()` on nodes containing text — it triggers font loading and will fail.
 
-**Detaching page templates:** After inserting a page template, you may detach it (`instance.detachInstance()`) to get a regular frame. Page templates typically contain the top nav and footer — detaching gives you direct access to all children for editing. You can tell it's a page template because its component key comes from the **Page templates** Notion doc.
+**Detaching page templates is mandatory, not optional.** Always detach immediately after inserting a page template (`instance.detachInstance()`). Without detaching, nested nodes have instance-relative IDs that cannot be addressed with `getNodeByIdAsync`, making all subsequent editing much harder. Do not attempt to inspect or edit the template before detaching. You can tell it's a page template because its component key comes from the **Page templates** Notion doc.
 
 **Never detach content blocks.** Content blocks inserted into the Content Blocks slot must remain as instances — detaching them breaks the component link and design system updates. You can tell it's a content block because its component key comes from the **Content blocks** Notion doc.
 
@@ -97,7 +115,11 @@ const slot = findByName(templateInstance, 'Content Blocks', 0);
 const component = await figma.importComponentByKeyAsync('COMPONENT_KEY');
 const instance = component.createInstance();
 slot.insertChild(INDEX, instance);
+// MUST set after insertChild — content blocks need to fill the slot width
+instance.layoutSizingHorizontal = 'FILL';
 ```
+
+**All content blocks must fill horizontally.** After inserting a content block into the Content Blocks slot, always set `instance.layoutSizingHorizontal = 'FILL'` so it stretches to the full page width. This must be set **after** `insertChild`, not before.
 
 ### 4.2 Reading instance properties
 
@@ -214,6 +236,27 @@ for c in children:
 ```
 
 Always re-inspect after modifying the slot to confirm changes.
+
+## Step 4b: Editing Assets
+
+When the user needs to place, swap, or edit image assets, read `assets-reference.md` (in the same directory as this skill) for component keys, alt text, and asset guidelines. Only read this file when asset editing is needed — not on every run.
+
+**Every content block with an image has a `[Web] Image` instance containing an `Image` SLOT.** This is where assets go. Never hide or disable the image — always keep `Media` / `Image` boolean properties enabled and insert the appropriate asset into the SLOT. Do not toggle `Media#...` or `Image#...` to `false` to "hide" an image — this collapses the image area and breaks the layout.
+
+There are three types of assets you can insert:
+
+**1. Photography** — Import the photography component via `figma.importComponentByKeyAsync(KEY)`, create an instance, clear the slot's existing children, and `appendChild` the instance into the `Image` SLOT. The user only needs to handle non-photography layers (UI overlays, card composites) manually.
+
+**2. Phone Bezel** — Import the Phone Bezel component (`da71ba...`), create an instance, insert into the `Image` SLOT the same way as photography. Set the background colour variant via `setProperties()` after insertion.
+
+**3. Simplified UI on solid background** — Do NOT insert any asset into the slot. Set the fill on the `[Web] Image` instance to the appropriate brand colour (Hot Coral or Dark Navy). Leave the slot contents as-is — describe the intended UI composition to the user so they can create it manually.
+
+**Fitting assets inside Image slots.** After inserting an asset into an `Image` SLOT, you **must** set `layoutSizingHorizontal` or `layoutSizingVertical` to `'FILL'` so the asset fills the container (Image wrappers are mostly square). Choose which axis based on the asset's aspect ratio:
+- **Square asset** — either axis works: `layoutSizingHorizontal = 'FILL'`
+- **Portrait asset** (taller than wide) — set width to fill: `layoutSizingHorizontal = 'FILL'`
+- **Landscape asset** (wider than tall) — set height to fill: `layoutSizingVertical = 'FILL'`
+
+**Important:** `layoutSizingHorizontal/Vertical = 'FILL'` must be set **after** the asset is appended to the slot (`slot.appendChild(instance)`), not before — setting it before append will throw.
 
 ## Step 5: Screenshot and Validate
 
