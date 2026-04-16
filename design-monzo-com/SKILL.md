@@ -251,12 +251,14 @@ There are three types of assets you can insert:
 
 **3. Simplified UI on solid background** — Do NOT insert any asset into the slot. Set the fill on the `[Web] Image` instance to the appropriate brand colour (Hot Coral or Dark Navy). Leave the slot contents as-is — describe the intended UI composition to the user so they can create it manually.
 
-**Fitting assets inside Image slots.** After inserting an asset into an `Image` SLOT, you **must** set `layoutSizingHorizontal` or `layoutSizingVertical` to `'FILL'` so the asset fills the container (Image wrappers are mostly square). Choose which axis based on the asset's aspect ratio:
-- **Square asset** — either axis works: `layoutSizingHorizontal = 'FILL'`
-- **Portrait asset** (taller than wide) — set width to fill: `layoutSizingHorizontal = 'FILL'`
-- **Landscape asset** (wider than tall) — set height to fill: `layoutSizingVertical = 'FILL'`
+**Fitting assets inside Image slots.** After inserting an asset into an `Image` SLOT, you **must** set **both** `layoutSizingHorizontal` and `layoutSizingVertical` to `'FILL'` so the asset fully fills the container in both directions:
+```javascript
+slot.appendChild(instance);
+instance.layoutSizingHorizontal = 'FILL';
+instance.layoutSizingVertical = 'FILL';
+```
 
-**Important:** `layoutSizingHorizontal/Vertical = 'FILL'` must be set **after** the asset is appended to the slot (`slot.appendChild(instance)`), not before — setting it before append will throw.
+**Important:** Both sizing properties must be set **after** the asset is appended to the slot (`slot.appendChild(instance)`), not before — setting them before append will throw.
 
 ## Step 5: Screenshot and Validate
 
