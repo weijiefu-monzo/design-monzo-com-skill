@@ -36,11 +36,12 @@ Before touching Figma, align with the user on what to build. This step produces 
 
 **Best practices:** Read `best-practices.md` (in the same directory as this skill) for proven patterns on content narrative, asset usage, visual rhythm, and conversion strategy. Use these patterns to inform block selection, ordering, and asset direction during planning.
 
-**Detailed block guidelines:** Each content block has a detailed design guidelines page in Notion. The "Page ID" column in the content blocks catalogue links to these pages. **Before proposing the page plan** (or when iterating on blocks with the user), read the detailed Notion page (`mcp__monzo__ReadNotionDoc` with the block's Page ID) for every content block you plan to use. These pages describe:
-- The block's layout structure and available sections
-- Animation and interaction details
-- Contentful property definitions and how each field maps to the design
-- Visual examples and best practices specific to that block
+**Detailed block guidelines:** Each content block has a detailed design guidelines page in Notion. The "Page ID" column in the content blocks catalogue links to these pages. **Before proposing the page plan** (or when iterating on blocks with the user), read the detailed Notion page (`mcp__monzo__ReadNotionDoc` with the block's Page ID) for every content block you plan to use. When reading these pages, **focus only on the Overview, Layout and behaviour, and Examples sections** — skip the "How to add in Contentful" section entirely during planning (it is only needed at Step 6: CMS Handoff). This saves significant context. The key information to extract is:
+- The block's layout structure (columns, grid vs carousel thresholds, stacking behaviour)
+- Minimum/maximum item counts (e.g. min 3 cards, max 4 steps)
+- Animation and interaction details (auto-transition, expand/collapse)
+- Asset aspect ratios and media requirements (e.g. 1:1 square, all steps need media if any do)
+- Available optional sections to enable/disable
 
 Use this information to make better-informed suggestions about content direction, which optional sections to enable/disable, and how to configure each block.
 
