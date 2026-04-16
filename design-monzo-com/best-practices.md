@@ -16,13 +16,15 @@ No page should dump all features upfront. Sequence information so each section b
 
 ### Block Ordering Patterns (from successful pages)
 
-| Position | Purpose | Typical Blocks |
-|---|---|---|
-| 1 | Hero — emotional hook + core value prop (includes built-in trust cues: customer count, app ratings, Trustpilot, badges) | Product Hero |
-| 2–4 | Feature showcase — visual storytelling | Cards Carousel, Feature Highlights, Feature Card Highlights |
-| 4–6 | Rational proof — comparison, how-it-works | Feature or Product Comparison, Progressive Content |
-| 6–8 | Trust reinforcement + objection handling | Media Text Block (awards), Customer Count & Trustpilot, FAQ, UI Spotlight |
-| Last | Conversion CTA | Open Account, Current Account Switch Service |
+| Position | Purpose |
+|---|---|
+| 1 | Hero — emotional hook + core value prop (includes built-in trust cues: customer count, app ratings, Trustpilot, badges) |
+| 2–4 | Feature showcase — visual storytelling |
+| 4–6 | Rational proof — comparison, how-it-works |
+| 6–8 | Trust reinforcement + objection handling |
+| Last | Conversion CTA |
+
+Choose which content blocks to use for each purpose from the full Notion catalogue — don't default to the same blocks every time. The catalogue has many options; pick the ones that best fit the page's narrative and content needs.
 
 **Note:** The Product Hero already includes trust cues (customer count, app store ratings, Trustpilot score, badges) built into its layout. The standalone Customer Count & Trustpilot block belongs in the trust reinforcement section (not immediately after the hero) to reinforce credibility later in the page when the user is closer to a decision.
 
