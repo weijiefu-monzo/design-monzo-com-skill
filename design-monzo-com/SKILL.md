@@ -36,6 +36,14 @@ Before touching Figma, align with the user on what to build. This step produces 
 
 **Best practices:** Read `best-practices.md` (in the same directory as this skill) for proven patterns on content narrative, asset usage, visual rhythm, and conversion strategy. Use these patterns to inform block selection, ordering, and asset direction during planning.
 
+**Detailed block guidelines:** Each content block has a detailed design guidelines page in Notion. The "Page ID" column in the content blocks catalogue links to these pages. **Before proposing the page plan** (or when iterating on blocks with the user), read the detailed Notion page (`mcp__monzo__ReadNotionDoc` with the block's Page ID) for every content block you plan to use. These pages describe:
+- The block's layout structure and available sections
+- Animation and interaction details
+- Contentful property definitions and how each field maps to the design
+- Visual examples and best practices specific to that block
+
+Use this information to make better-informed suggestions about content direction, which optional sections to enable/disable, and how to configure each block.
+
 **Asset planning:** For every content block that contains an image, also suggest an asset direction. Read `assets-reference.md` (in the same directory as this skill) for the photography component table and asset guidelines. Consider:
 - **Asset type** — photography, app UI in phone bezel, simplified UI on contrast background, or a combination
 - **Photography selection** — suggest a specific photography component from the reference table that fits the block's narrative. Use the alt text to judge relevance.
