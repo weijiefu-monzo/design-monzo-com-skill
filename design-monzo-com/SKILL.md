@@ -25,7 +25,8 @@ Use `mcp__monzo__ReadNotionDoc` with these doc IDs. Do not open foundation docs 
 1. Find "Component Key" column in the content blocks and page templates Notion docs.
 2. Build a reference list of all available content blocks and page templates with their names, descriptions, and component keys.
 3. Only use blocks that have a component key. Prioritise blocks that are also available in Contentful (have a Contentful link) — these are production-ready. Blocks without component keys are not yet available; if one would be a good fit, mention it to the user as "coming soon" but do not plan around it.
-4. Do **not** use `search_design_system` to find components — Notion databases are the source of truth.
+4. Check the **"Use directly"** column. Blocks marked **Yes** must be inserted as-is — do **not** edit their properties (text, variants, assets, or visibility). They are pre-designed and ready to use without modification. Only edit blocks where "Use directly" is **No**.
+5. Do **not** use `search_design_system` to find components — Notion databases are the source of truth.
 
 Present the available content blocks and page templates to the user as a summary so they know what building blocks are available.
 
@@ -89,6 +90,8 @@ Proceed to Step 4 based on the user's choice.
 ## Step 4: Design in Figma
 
 ### 4.1 Inserting templates and content blocks
+
+**"Use directly" blocks:** Before editing any content block, check whether it is marked "Use directly: Yes" in the Notion catalogue (from Step 2). If yes, skip all property edits for that block — insert it and move on. Only edit blocks where "Use directly" is No.
 
 **Always start with a page template.** Insert a page template instance first, then edit, remove, or rearrange content blocks within its Content Blocks slot.
 
