@@ -62,6 +62,7 @@ Choose assets based on what story the block is telling, not just to fill space:
 ## Conversion Strategy
 
 - **Multiple CTAs at different commitment levels.** Offer a primary action ("Open a free Monzo account") and secondary actions ("Learn more") throughout the page. Don't be pushy, but provide exits at every section.
+- **At least one primary CTA in every block.** Every content block that supports a CTA should have a primary button enabled, giving the user an opportunity to sign up at any point on the page. Don't hide CTAs to "clean up" the design — a visible primary action in each section is a conversion opportunity.
 - **Place comparison tables before conversion CTAs.** Help users self-select and feel confident before the final conversion block.
 - **Use CASS / switch service as a closer.** For current account pages, the switch service block near the bottom removes the final "but switching is hard" objection.
 - **FAQ before or near the final CTA.** Address remaining doubts just before asking for commitment.
