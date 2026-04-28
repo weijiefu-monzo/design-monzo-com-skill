@@ -257,17 +257,17 @@ Always re-inspect after modifying the slot to confirm changes.
 
 When the user needs to place, swap, or edit image assets, read `assets-reference.md` (in the same directory as this skill) for component keys, alt text, and asset guidelines. Only read this file when asset editing is needed — not on every run.
 
-**Every content block with an image has a `[Web] Image` instance containing an `Image` SLOT.** This is where assets go. Never hide or disable the image — always keep `Media` / `Image` boolean properties enabled and insert the appropriate asset into the SLOT. Do not toggle `Media#...` or `Image#...` to `false` to "hide" an image — this collapses the image area and breaks the layout.
+**Every content block with an image has a `[Web] Media` instance containing a `Media` SLOT.** This is where assets go. Never hide or disable the image — always keep `Media` boolean properties enabled and insert the appropriate asset into the SLOT. Do not toggle `Media#...` to `false` to "hide" an image — this collapses the image area and breaks the layout.
 
 There are three types of assets you can insert:
 
-**1. Photography** — Import the photography component via `figma.importComponentByKeyAsync(KEY)`, create an instance, clear the slot's existing children, and `appendChild` the instance into the `Image` SLOT. The user only needs to handle non-photography layers (UI overlays, card composites) manually.
+**1. Photography** — Import the photography component via `figma.importComponentByKeyAsync(KEY)`, create an instance, clear the slot's existing children, and `appendChild` the instance into the `Media` SLOT. The user only needs to handle non-photography layers (UI overlays, card composites) manually.
 
-**2. Phone Bezel** — Import the Phone Bezel component (`da71ba...`), create an instance, insert into the `Image` SLOT the same way as photography. Set the background colour variant via `setProperties()` after insertion.
+**2. Phone Bezel** — Import the Phone Bezel component (`da71ba...`), create an instance, insert into the `Media` SLOT the same way as photography. Set the background colour variant via `setProperties()` after insertion.
 
-**3. Simplified UI on solid background** — Do NOT insert any asset into the slot. Set the fill on the `[Web] Image` instance to the appropriate brand colour (Hot Coral or Dark Navy). Leave the slot contents as-is — describe the intended UI composition to the user so they can create it manually.
+**3. Simplified UI on solid background** — Do NOT insert any asset into the slot. Set the fill on the `[Web] Media` instance to the appropriate brand colour (Hot Coral or Dark Navy). Leave the slot contents as-is — describe the intended UI composition to the user so they can create it manually.
 
-**Fitting assets inside Image slots.** After inserting an asset into an `Image` SLOT, you **must** set **both** `layoutSizingHorizontal` and `layoutSizingVertical` to `'FILL'` so the asset fully fills the container in both directions:
+**Fitting assets inside Media slots.** After inserting an asset into a `Media` SLOT, you **must** set **both** `layoutSizingHorizontal` and `layoutSizingVertical` to `'FILL'` so the asset fully fills the container in both directions:
 ```javascript
 slot.appendChild(instance);
 instance.layoutSizingHorizontal = 'FILL';
@@ -280,14 +280,14 @@ instance.layoutSizingVertical = 'FILL';
 
 ### 5.1 Asset verification (mandatory)
 
-Before taking a screenshot, verify that every content block with an image has an asset inserted. Run a verification script that traverses the page and checks every `[Web] Image` instance for whether its `Image` SLOT has children:
+Before taking a screenshot, verify that every content block with an image has an asset inserted. Run a verification script that traverses the page and checks every `[Web] Media` instance for whether its `Media` SLOT has children:
 
 ```javascript
-// Find all [Web] Image instances and check their Image slots
+// Find all [Web] Media instances and check their Media slots
 function findAllImages(node, path, results, depth = 0) {
   if (!node || depth > 8) return;
-  if (node.type === 'INSTANCE' && node.name === '[Web] Image') {
-    const slot = node.children ? node.children.find(c => c.name === 'Image' && c.type === 'SLOT') : null;
+  if (node.type === 'INSTANCE' && node.name === '[Web] Media') {
+    const slot = node.children ? node.children.find(c => c.name === 'Media' && c.type === 'SLOT') : null;
     const hasAsset = slot && slot.children && slot.children.length > 0;
     results.push({
       path: path,
@@ -295,7 +295,7 @@ function findAllImages(node, path, results, depth = 0) {
       hasAsset: hasAsset,
       slotChildCount: slot ? slot.children.length : 0,
     });
-    return; // Don't recurse deeper into [Web] Image
+    return; // Don't recurse deeper into [Web] Media
   }
   if ('children' in node && node.children) {
     for (const child of node.children) {
@@ -305,17 +305,17 @@ function findAllImages(node, path, results, depth = 0) {
 }
 ```
 
-For every `[Web] Image` where `hasAsset` is `false` and the block's `Media` / `Image` boolean property is enabled, insert the appropriate asset from the page plan. Do not skip image slots — empty image slots result in blank areas on the page.
+For every `[Web] Media` where `hasAsset` is `false` and the block's `Media` boolean property is enabled, insert the appropriate asset from the page plan. Do not skip media slots — empty media slots result in blank areas on the page.
 
 **Common places where assets are missed:**
-- Carousel card slides — each slide has its own `[Web] Image`
+- Carousel card slides — each slide has its own `[Web] Media`
 - Progressive content steps — each step may have a media area
 - Feature card highlights — each card has an image
 - Media text blocks — the main image area
 
 ### 5.2 Asset annotations (mandatory)
 
-After verifying assets, annotate every visible `[Web] Image` instance with asset direction. This helps designers understand the rationale and what manual work remains.
+After verifying assets, annotate every visible `[Web] Media` instance with asset direction. This helps designers understand the rationale and what manual work remains.
 
 **First, clear all existing annotations** on the page to avoid stale notes from previous iterations:
 ```javascript
@@ -340,7 +340,7 @@ if (!cat) {
 }
 ```
 
-**Then, annotate each `[Web] Image` instance** with:
+**Then, annotate each `[Web] Media` instance** with:
 - **Rationale** — why this asset type was chosen (e.g. "Lifestyle photography conveys warmth", "Phone bezel showcases specific app feature", "Hot Coral for brand breathing room")
 - **TODO** — what still needs to be done (e.g. "Add simplified UI overlay showing Savings Pots", "Replace placeholder bezel with actual app screenshot", or "Asset is final — no action needed")
 
